@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <span class="h1"><%= @job.company_title %>&nbsp;&nbsp;</span>
+        <span class="location_title text-muted"><%= @job.location %></span>
+        <div class="job_title mt-1"><%= @job.job_title %></div>
+      </div>
+      <div>
+        <div class="d-flex mt-2">
+          <%= link_to 'Edit', edit_job_path(@job), :class => 'btn btn-info mr-2' %>
+          <%= link_to 'Delete', job_path(@job), 'data-method' => 'delete', 'data-confirm' => 'Are you sure?', :class => 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card mb-3">
+          <div class="card-body card-custom-height" id="description-card">
+          <h6 class="card-subtitle mb-2 text-muted">Skills</h6>
+            <p class="card-text"><%= @job.skills %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Priority</h6>
+            <p class="card-text"><%= @job.priority %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Final Decision</h6>
+            <p class="card-text"><%= @job.final_decision %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Date Applied</h6>
+            <p class="card-text"><%= @job.date_applied %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 d-flex">
+        <div class="card flex-fill mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Online Assessment Status</h6>
+            <p class="card-text"><%= @job.online_assessment_status %></p>
+            <h6 class="card-subtitle mb-2 text-muted">Online Assessment Deadline</h6>
+            <p class="card-text"><%= @job.online_assessment_deadline %></p>
+            <h6 class="card-subtitle mb-2 text-muted">Online Assessment Confidence Rating</h6>
+            <p class="card-text"><%= @job.confidence_rating_oa %></p>
+            <h6 class="card-subtitle mb-2 text-muted">Online Assessment Notes</h6>
+            <p class="card-text"><%= @job.oa_notes %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-flex">
+        <div class="card flex-fill mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Interview Status</h6>
+            <p class="card-text"><%= @job.interview_status %></p>
+            <h6 class="card-subtitle mb-2 text-muted">Interview Date</h6>
+            <p class="card-text"><%= @job.interview_date %></p>
+            <h6 class="card-subtitle mb-2 text-muted">Interview Confidence Rating</h6>
+            <p class="card-text"><%= @job.confidence_rating_interview %></p>
+            <h6 class="card-subtitle mb-2 text-muted">Interview Notes</h6>
+            <p class="card-text"><%= @job.interview_notes %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

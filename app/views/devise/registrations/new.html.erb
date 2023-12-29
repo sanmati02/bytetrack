@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .custom-card {
+            max-width: 400px; /* Adjust the width as needed */
+            margin: auto;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card custom-card">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Sign Up</h2>
+
+                <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "form"}) do |f| %>
+                  <%= render "devise/shared/error_messages", resource: resource %>
+
+                  <div class="form-group">
+                    <%= f.label :email %>
+                    <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :password %>
+                    <% if @minimum_password_length %>
+                    <em>(<%= @minimum_password_length %> characters minimum)</em>
+                    <% end %>
+                    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :password_confirmation %>
+                    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+                  </div>
+
+                  <div class="text-center">
+                    <%= f.submit "Sign up", class: "btn btn-info btn-block" %>
+                  </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

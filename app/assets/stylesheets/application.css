@@ -1,0 +1,92 @@
+/* application.css */
+
+/*= require_tree . */
+/*= require_self */
+
+.clickable_row {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f5f5f5;
+  margin-bottom: 50px;
+  border-radius: 10px;
+
+  transition: background-color 0.2s;
+}
+
+.clickable_row:hover {
+  background-color: #e0e0e0;
+}
+
+.skills-input {
+  height: 90px; 
+}
+
+.filter-form {
+  padding: 10px; 
+  background-color: #b3e0f2 !important; 
+  border-radius: 5px;
+}
+
+.entire_page {
+    margin:0;
+}
+
+.container {
+    max-width: none;
+}
+
+.filter-form {
+  min-height: 83vh;
+}
+
+.small-font {
+  font-size: 12px;
+}
+
+.applied-number{
+  font-size: 12px;
+}
+
+.location_title {
+  font-size: 1em !important;
+}
+
+.job_title {
+  font-size: 22px !important;
+}
+
+.card_padding {
+  padding-left: 5px; 
+  padding-right: 5px
+}
+
+.c_body {
+  margin: -15px;
+}
+
+.c_text {
+  margin-bottom: -5px;
+}
+
+ul.ui-autocomplete {
+  position: absolute;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: solid 1px #999;
+  cursor: default;
+}
+
+ul.ui-autocomplete li {
+  background-color: #FFF;
+  border-top: solid 1px #DDD;
+  padding: 10px;
+}
+
+ul.ui-autocomplete li:hover {
+  background-color: #FFFCB2;
+}
+
+.ui-helper-hidden-accessible{
+  display:none !important;
+}

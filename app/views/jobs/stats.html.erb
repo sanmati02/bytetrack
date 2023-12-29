@@ -1,0 +1,70 @@
+<div class="container-fluid entire-page">
+    <div class="row">
+        <h2>Application Statistics</h2>
+    </div>
+    <div class="my-4">
+        <div class="card-deck">
+            <div class="card text-center">
+                <div class="card-body">
+                <h1 class="card-title" style="font-size: 6rem;"><%= current_user.jobs.count %></h1>
+                <p class="card-text">job(s) applied</p>
+                </div>
+            </div>
+
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 class="card-title" style="font-size: 6rem;"><%= current_user.jobs.where(online_assessment_status: "Complete").count %></h1>
+                    <span class="card-text">online assessment(s) completed</span>
+                    <% average_confidence = current_user.jobs.where.not(confidence_rating_oa: nil).average(:confidence_rating_oa) %>
+                    <% if average_confidence.present? %>
+                      <p class="card-text"> with a confidence of <b><%= (average_confidence / 5.0 * 100).round(2) %>%</b></p>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 class="card-title" style="font-size: 6rem;"><%= current_user.jobs.where(interview_status: "Complete").count %></h1>
+                    <span class="card-text">interview(s) completed</span>
+                    <% average_confidence = current_user.jobs.where.not(confidence_rating_interview: nil).average(:confidence_rating_interview) %>
+                    <% if average_confidence.present? %>
+                      <p class="card-text"> with a confidence of <b><%= (average_confidence / 5.0 * 100).round(2) %>%</b></p>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="card text-center">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="card-title" style="font-size: 6rem;"><%= current_user.jobs.where(final_decision: "Received Offer").count %></h1>
+                            <p class="card-text">offer(s) received</p>
+                        </div>
+                        <div class="col">
+                            <h1 class="card-title"><%= current_user.jobs.where(final_decision: "Rejected").count %></h1>
+                            <p class="card-text">rejection(s)</p>
+                            <h1 class="card-title"><%= current_user.jobs.where(final_decision: "Waiting").count %></h1>
+                            <p class="card-text">pending</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <%= line_chart current_user.jobs.group_by_day(:date_applied, range: 3.months.ago.midnight..Time.now).count, title: "Number of Applications Per Day", xtitle: "Date Applied", ytitle: "App Count", height: "300px" %>
+    </div>
+    <br/>
+    <div class="row my-4">
+        <%= pie_chart current_user.jobs.where.not(online_assessment_status: "N/A").group(:online_assessment_status).count, title: "Overview of OA Statuses", colors: ["#009925", "#ff0000", "#0087bd"], width: "33%" %>
+        <%= pie_chart current_user.jobs.where.not(interview_status: "N/A").group(:interview_status).count, title: "Overview of Interview Statuses", colors: ["#009925", "#ff0000", "#0087bd"], width: "33%" %>
+        <%= pie_chart current_user.jobs.where.not(final_decision: "N/A").group(:final_decision).count, title: "Overview of Decision Outcomes", colors: ["#009925", "#ff0000", "#0087bd"], width: "33%" %>
+    </div>
+    <br/>
+    <div class="row my-4">
+        <%= column_chart current_user.jobs.where.not(confidence_rating_oa: nil).group(:confidence_rating_oa).count, title: "Confidence in OAs", xtitle: "Confidence Rating", ytitle: "OA Count", width: "50%" %>
+        <%= column_chart current_user.jobs.where.not(confidence_rating_interview: nil).group(:confidence_rating_interview).count, title: "Confidence in Interviews", xtitle: "Confidence Rating", ytitle: "Interview Count", width: "50%" %>
+    </div>
+</div>

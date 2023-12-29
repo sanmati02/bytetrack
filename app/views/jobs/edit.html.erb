@@ -1,0 +1,120 @@
+<h2>Edit Existing Job Application</h2>
+
+<% if flash[:alert_company_title] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert_company_title] %>
+  </div>
+<% end %>
+<% if flash[:alert_job_title] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert_job_title] %>
+  </div>
+<% end %>
+<% if flash[:alert_date_applied] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert_date_applied] %>
+  </div>
+<% end %>
+<% if flash[:alert_date_applied_future] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert_date_applied_future] %>
+  </div>
+<% end %>
+<% if flash[:oa_deadline_issue] %>
+  <div class="alert alert-danger">
+    <%= flash[:oa_deadline_issue] %>
+  </div>
+<% end %>
+<% if flash[:interview_date_issue] %>
+  <div class="alert alert-danger">
+    <%= flash[:interview_date_issue] %>
+  </div>
+<% end %>
+
+<%= form_tag job_path(@job), :method => :put do %>
+  <div class="form-group row">
+      <div class="col">
+        <%= label :job, :company_title, "Company <span class='text-danger'>*</span>".html_safe %>
+        <%= text_field :job, :company_title, class: 'form-control' %>
+      </div>
+      <div class="col">
+        <%= label :job, :job_title, "Job Title <span class='text-danger'>*</span>".html_safe %>
+        <%= text_field :job, :job_title, class: 'form-control' %>
+      </div>
+      <div class="col">
+        <%= label :job, :location, 'Location(s)' %>
+        <%= text_field :job, :location, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label :job, :skills, 'Skills' %>
+      <%= text_field :job, :skills, class: 'form-control skills-input' %>
+    </div>
+
+    <div class="form-group row">
+      <div class="col">
+        <%= label :job, :priority, "Priority <span class='text-danger'>*</span>".html_safe %>
+        <%= select :job, :priority, ['Low', 'Medium', 'High'], {}, class: 'form-control' %>
+      </div>
+      <div class="col">
+        <%= label :job, :final_decision, "Final Decision <span class='text-danger'>*</span>".html_safe %>
+        <%= select :job, :final_decision, ['Waiting', 'Received Offer', 'Rejected'], {}, class: 'form-control' %>
+      </div>
+      <div class="col">
+        <%= label :job, :date_applied, "Date Applied <span class='text-danger'>*</span>".html_safe %>
+        <%= date_field :job, :date_applied, class: 'form-control' %>
+      </div>
+    </div>
+
+    <br/>
+
+    <div class="form-group row">
+      <div class="col">
+        <div class="form-group">
+          <%= label :job, :online_assessment_status, 'OA Status' %>
+          <%= select :job, :online_assessment_status, ['N/A', 'Not yet received', 'Pending', 'Complete'], { include_blank: '' }, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= label :job, :online_assessment_deadline, 'OA Deadline' %>
+          <%= date_field :job, :online_assessment_deadline, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= label :job, :confidence_rating_oa, 'OA Confidence Rating' %>
+          <%= select :job, :confidence_rating_oa, [5, 4, 3, 2, 1], { include_blank: '' }, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= label :job, :oa_notes, 'OA Notes' %>
+          <%= text_field :job, :oa_notes, class: 'form-control skills-input' %>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-group">
+          <%= label :job, :interview_status, 'Interview Status' %>
+          <%= select :job, :interview_status, ['N/A', 'Not scheduled', 'Scheduled', 'Complete'], { include_blank: '' }, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= label :job, :interview_date, 'Interview Date' %>
+          <%= date_field :job, :interview_date, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= label :job, :confidence_rating_interview, 'Interview Confidence Rating' %>
+          <%= select :job, :confidence_rating_interview, [5, 4, 3, 2, 1], { include_blank: '' }, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= label :job, :interview_notes, 'Interview Notes' %>
+          <%= text_field :job, :interview_notes, class: 'form-control skills-input' %>
+        </div>
+      </div>
+    </div>
+
+  <%= submit_tag 'Update Job Info', :class => 'btn btn-info' %>
+  <%= link_to 'Cancel', jobs_path, :class => 'btn btn-secondary' %>
+<% end %>

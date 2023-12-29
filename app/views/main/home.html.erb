@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome!</h1>
+            <p class="lead">Join us to start your career adventure today.</p>
+            <% if !(current_user) %>
+                <class="nav-item"> <%= link_to "Log In", new_user_session_path, class: 'btn btn-lg btn-info mr-2'  %>
+                <class="nav-item"> <%= link_to "Sign Up", new_user_registration_path, class: 'btn btn-lg btn-outline-info mr-2'  %>
+            <% end %>
+        </div>
+    </div>
+</body>
+</html>

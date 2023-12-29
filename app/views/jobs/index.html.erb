@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    function resetForm() {
+      var form = document.getElementById('filter-form');
+
+      var priorityFilterSelect = form.elements["priority"];
+      priorityFilterSelect.selectedIndex = 0;
+
+      var finalDecisionFilterSelect = form.elements["final_decision"];
+      finalDecisionFilterSelect.selectedIndex = 0;
+
+      var taskListFilterSelect = form.elements["task_list"];
+      taskListFilterSelect.selectedIndex = 0;
+
+      var sortJobsSelect = form.elements["sort_jobs"];
+      sortJobsSelect.selectedIndex = 0;
+
+      var searchBar = form.elements["search"];
+      searchBar.value = "";
+
+      form.submit();
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div class="container-fluid entire-page">
+
+    <div class="row">
+      <div class="col-md" style="padding: 0px">
+        <% if @companies_with_oa_deadlines.present? %>
+        <div id = "oa">
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              The online assessment deadlines for the following companies are <strong>less than 3 days</strong> away:
+              <ul>
+                <% @companies_with_oa_deadlines.each do |company_name| %>
+                  <li><strong><%= company_name %></strong></li>
+                <% end %>
+              </ul>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        <% end %>
+        <% if @companies_with_interviews_due.present? %>
+          <div id = "interview">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              The interview dates for the following companies are <strong>less than 3 days</strong> away:
+              <ul>
+                <% @companies_with_interviews_due.each do |company_name| %>
+                  <li><strong><%= company_name %></strong></li>
+                <% end %>
+              </ul>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2 filter-form">
+        <div class="form">
+          <%= form_tag jobs_path, method: :get, class: 'filter-form', id: 'filter-form' do %>
+            <b><p class="h4">Filter</p></b>
+            <div class="form-group">
+              <%= select_tag :priority, options_for_select(['High', 'Medium', 'Low'], params[:priority]), class: 'form-control', include_blank: 'Select Priority' %>
+            </div>
+            <div class="form-group">
+              <%= select_tag :final_decision, options_for_select(['Waiting', 'Received Offer', 'Rejected'], params[:final_decision]), class: 'form-control', include_blank: 'Select Final Decision' %>
+            </div>
+            <div class="form-group">
+              <%= select_tag :task_list, options_for_select(['OA Pending', 'Interview Upcoming', 'Both'], params[:task_list]), class: 'form-control', include_blank: 'Select Task List' %>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-info btn-sm">Apply Filters</button>
+            </div>
+            <br>
+            <b><p class="h4">Sort</p></b>
+            <div class="form-group">
+              <%= select_tag :sort_jobs, options_for_select(['Company Title: A-Z', 'Company Title: Z-A', 'Priority: Low-High', 'Priority: High-Low', 'Final Decision', 'Date Applied'], params[:sort_jobs]), class: 'form-control', include_blank: 'Sort By' %>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-info btn-sm">Apply Sort</button>
+            </div>
+            <br>
+            <b><p class="h4">Search</p></b>
+            <div class="form-group">
+              <%= text_field_tag :search, params[:search], class: 'form-control', type: 'search' %>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-info btn-sm">Apply Search</button>
+            </div>
+            <br>
+            <br>
+            <div class="form-group text-center">
+              <button type="button" class="btn btn-light btn-lg" onclick="resetForm()">Clear Settings</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md" style="padding-right: 0px">
+        <div class="card-body card_padding">
+          <h5 class="card-title">Applied</h5>
+          <% if @applied_jobs.present? %>
+            <% @applied_jobs.each do |job| %>
+              <div class="card mb-2 clickable_row" data-href="<%= job_path(job) %>" onclick="window.location.href = this.getAttribute('data-href');">
+                <div class="card-body c_body">
+                  <h6 class="card-subtitle mb-2 mt-1 text-muted">
+                    <%= job.company_title %>
+                    <% if @oa_action_required.present? && @oa_action_required.include?(job.company_title)%>
+                      <span class="badge badge-success">OA Pending</span>
+                    <% end %>
+                    <% if @interview_action_required.present? && @interview_action_required.include?(job.company_title)%>
+                      <span class="badge badge-primary">Interview Upcoming</span>
+                    <% end %>
+                  </h6>
+                  <p class="card-text small c_text">Date applied: <%= job.date_applied %></p>
+                  <p class="card-text small c_text">Priority: <%= job.priority %></p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+
+
+      <div class="col-md" style="padding-left: 0px; padding-right: 0px">
+        <div class="card-body card_padding">
+          <h5 class="card-title">Completed OA</h5>
+          <% if @completed_oa_jobs.present? %>
+            <% @completed_oa_jobs.each do |job| %>
+              <div class="card mb-2 clickable_row" data-href="<%= job_path(job) %>" onclick="window.location.href = this.getAttribute('data-href');">
+                <div class="card-body c_body">
+                  <h6 class="card-subtitle mb-2 mt-1 text-muted">
+                    <%= job.company_title %>
+                    <% if @interview_action_required.present? && @interview_action_required.include?(job.company_title)%>
+                      <span class="badge badge-primary">Interview Upcoming</span>
+                    <% end %>
+                  </h6>
+                  <p class="card-text small c_text">Date applied: <%= job.date_applied %></p>
+                  <p class="card-text small c_text">Priority: <%= job.priority %></p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md" style="padding-left: 0px; padding-right: 0px">
+        <div class="card-body card_padding">
+          <h5 class="card-title">Completed Interviews</h5>
+          <% if @completed_interviews_jobs.present? %>
+            <% @completed_interviews_jobs.each do |job| %>
+              <div class="card mb-2 clickable_row" data-href="<%= job_path(job) %>" onclick="window.location.href = this.getAttribute('data-href');">
+                <div class="card-body c_body">
+                  <h6 class="card-subtitle mb-2 mt-1 text-muted"><%= job.company_title %></h6>
+                  <p class="card-text small c_text">Date applied: <%= job.date_applied %></p>
+                  <p class="card-text small c_text">Priority: <%= job.priority %></p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md" style="padding-left: 0px; padding-right: 0px">
+        <div class="card-body card_padding">
+          <h5 class="card-title">Heard Back</h5>
+          <% if @heard_back_jobs.present? %>
+            <% @heard_back_jobs.each do |job| %>
+              <div class="card mb-2 clickable_row" data-href="<%= job_path(job) %>" onclick="window.location.href = this.getAttribute('data-href');" style="<%= job_card_style(job) %>">
+                <div class="card-body c_body">
+                  <h6 class="card-subtitle mb-2 mt-1 text-muted"><%= job.company_title %></h6>
+                  <p class="card-text small c_text">Date applied: <%= job.date_applied %></p>
+                  <p class="card-text small c_text">Priority: <%= job.priority %></p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
